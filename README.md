@@ -6,6 +6,8 @@
 
 同花顺交易接口测试 Demo（x64）：[ths_demo_x64v1.0.zip](https://github.com/jyApiZx/stockapi/releases/download/v1.0.0/ths_demo_x64v1.0.zip)
 
+行情 L1 测试包（内含 `HqApi.dll` 和演示程序）：[64 位](https://github.com/jyApiZx/stockapi/releases/download/v1.1.0/HqApi-x64.zip)、[32 位](https://github.com/jyApiZx/stockapi/releases/download/v1.1.0/HqApi-x32.zip)
+
 建议先用**同花顺模拟账户**登录，测试查询、下单和撤单。
 
 **重要提示**：为避免资金损失，请先用同花顺模拟账户测试。登录账号和资金账号都填写模拟账户的资金账号。`xdDemo.exe` 提供了图形测试界面。
