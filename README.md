@@ -1,32 +1,24 @@
 # 通达信/同花顺纯协议接口
 
-**产品介绍见 [thsapi.com](https://thsapi.com/)。提供同花顺纯协议交易接口（支持 x86 和 x64），直连券商，无需启动客户端，支持大部分券商。支持 Python、Java、C#、C/C++。技术支持请联系 Telegram：`JyApi888`。**
+说明见 [thsapi.com](https://thsapi.com/)。交易用 `thsapi.dll`，行情用 `HqApi.dll`，都有 32 位和 64 位。程序直接连券商，不用把同花顺或通达信客户端一直开着。Python、Java、C#、C/C++ 都可以接。有问题可以联系 Telegram：`JyApi888`。
 
-## 下载链接
+## 下载
 
-同花顺交易接口测试包 1.0.2：[64 位](https://github.com/jyApiZx/stockapi/releases/download/v1.0.2/thsapi_1.0.2_x64.zip)、[32 位](https://github.com/jyApiZx/stockapi/releases/download/v1.0.2/thsapi_1.0.2_x32.zip)
+交易测试包 1.0.2，里面是 `thsapi.dll` 和 `xdDemo.exe`：[64 位](https://github.com/jyApiZx/stockapi/releases/download/v1.0.2/thsapi_1.0.2_x64.zip)、[32 位](https://github.com/jyApiZx/stockapi/releases/download/v1.0.2/thsapi_1.0.2_x32.zip)
 
-行情 L1 测试包（内含 `HqApi.dll` 和演示程序）：[64 位](https://github.com/jyApiZx/stockapi/releases/download/v1.1.0/HqApi-x64.zip)、[32 位](https://github.com/jyApiZx/stockapi/releases/download/v1.1.0/HqApi-x32.zip)
+行情测试包目前是 L1，里面是 `HqApi.dll` 和演示程序：[64 位](https://github.com/jyApiZx/stockapi/releases/download/v1.1.0/HqApi-x64.zip)、[32 位](https://github.com/jyApiZx/stockapi/releases/download/v1.1.0/HqApi-x32.zip)。L2 的十档和逐笔还没放进这个包。
 
-建议先用**同花顺模拟账户**登录，测试查询、下单和撤单。
-
-**重要提示**：为避免资金损失，请先用同花顺模拟账户测试。登录账号和资金账号都填写模拟账户的资金账号。`xdDemo.exe` 提供了图形测试界面。
-
-`HqApi.dll` 对接行情（含 **L2**：十档、逐笔成交、逐笔委托）。大 QMT 无法使用时，可以用本接口继续完成交易和行情。
+请先用同花顺模拟账户试查询、下单和撤单，确认没问题再用实盘。登录账号和资金账号都填模拟账户的资金账号。`xdDemo.exe` 是一个可以点的测试窗口，建议先用它登录看看。
 
 ## 登录
 
-`Logon` 的通讯密码，大部分券商填空字符串 `""`，个别券商需要填写。可以先用 `xdDemo.exe` 确认账号能登录，再接到自己的程序里。
+`Logon` 的通讯密码，多数券商填空字符串 `""` 就行，少数券商要填。可以先在 `xdDemo.exe` 里登录成功，再写到自己的程序里。
 
-## 项目作用
+## 能做什么
 
-这是一套轻量调用的**实时股票数据 / 交易 API**。交易加载 `thsapi.dll`，行情加载 `HqApi.dll`，支持 **x86 / x64**，不需要让同花顺或通达信客户端一直开着，用来避开大 QMT 的限制。
+交易可以登录后查资金、持仓、委托和成交，也可以下单、撤单。行情这一版能取实时行情、Tick、买卖五档，以及一分钟、五分钟等 K 线。
 
-行情提供**实时数据**、**实时 Tick 数据**、**买卖五档数据**、**一分钟数据**、**五分钟数据**等 K 线。L2 还可取十档、逐笔成交和逐笔委托。
-
-交易侧是**券商交易接口**：登录后查询资金、持仓、委托和成交，并支持**毫秒急速下单**和撤单。支持大部分券商。
-
-本仓库公开的是**调用示例**（C++ / C# / Python / Java）。交易示例运行时加载 `thsapi.dll`，测试包见上方下载。最新说明以本仓库主页为准。
+本仓库里放的是调用示例（C++ / C# / Python / Java）。DLL 在上面的测试包里，不在 git 仓库中。
 
 ## 接口功能概览
 
@@ -138,7 +130,7 @@ A 股：`TdxHq_Connect` → 各类查询 → `TdxHq_Disconnect`。扩展行情�
 | `TdxHq_GetHistoryFundFlow` | 历史资金流向 |
 | `TdxHq_GetReportFile` | 下载报表文件到本地 |
 
-### L2（重点）
+### L2
 
 连接 **L2 主机**（常见端口 `7719`，需授权）后可使用：
 
