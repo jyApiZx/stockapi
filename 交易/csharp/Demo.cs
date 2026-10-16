@@ -14,16 +14,16 @@ internal static class ThsApi
 {
     public const string DllName = "thsapi.dll";
 
-    /// <summary>初始化交易运行时。进程内调用一次，须在 Logon 之前。同 OpenTdx。</summary>
+    /// <summary>初始化交易运行时。进程内调用一次，须在 Logon 之前。</summary>
     [DllImport(DllName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
     public static extern void Init();
 
-    /// <summary>释放全部会话并关闭运行时。调用后不可再使用此前的 ClientID。同 CloseTdx。</summary>
+    /// <summary>释放全部会话并关闭运行时。调用后不可再使用此前的 ClientID。</summary>
     [DllImport(DllName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
     public static extern void UnInit();
 
     /// <summary>
-    /// 交易账户登录。成功返回 ClientID（&gt;=0），失败返回 -1。
+    /// 交易账户登录。成功返回 ClientID（>=0），失败返回 -1。
     /// </summary>
     /// <param name="ip">交易服务器 IP 或域名。</param>
     /// <param name="port">交易服务器端口。</param>
@@ -161,7 +161,7 @@ internal static class ThsApi
     public static extern void Repay(int clientId, string amount, StringBuilder result, StringBuilder errInfo);
 
     /// <summary>
-    /// 查询可买/可卖数量。返回值 &gt;=0 为数量，负数表示失败。
+    /// 查询可买/可卖数量。返回值 >=0 为数量，负数表示失败。
     /// category、priceType 同 SendOrder（不含新股申购）。
     /// </summary>
     [DllImport(DllName, CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Ansi)]
@@ -207,32 +207,48 @@ internal static class ThsApi
 
 internal static class Program
 {
-    /// <summary>本示例只查 0–5。两融和新股类别在普通账户上可能失败，甚至把连接踢掉。</summary>
-    private static readonly (int Category, string Name)[] QueryOrder =
+    private struct Field
     {
-        (0, "资金"),
-        (1, "股份"),
-        (2, "当日委托"),
-        (3, "当日成交"),
-        (4, "可撤单"),
-        (5, "股东代码"),
+        public int Id;
+        public string Title;
+        public Field(int id, string title) { Id = id; Title = title; }
+    }
+
+    private struct QueryItem
+    {
+        public int Category;
+        public string Name;
+        public QueryItem(int category, string name) { Category = category; Name = name; }
+    }
+
+    /// <summary>本示例只查 0–5。两融和新股类别在普通账户上可能失败，甚至把连接踢掉。</summary>
+    private static readonly QueryItem[] QueryOrder =
+    {
+        new QueryItem(0, "资金"),
+        new QueryItem(1, "股份"),
+        new QueryItem(2, "当日委托"),
+        new QueryItem(3, "当日成交"),
+        new QueryItem(4, "可撤单"),
+        new QueryItem(5, "股东代码"),
     };
 
     /// <summary>各类查询要留下的常用字段。顺序就是打印的列序。</summary>
-    private static readonly Dictionary<int, (int Id, string Title)[]> CommonFields =
-        new Dictionary<int, (int Id, string Title)[]>
-        {
-            { 0, new[] { (2172, "货币单位"), (2112, "资金余额"), (2116, "可用金额"), (2114, "可取金额"), (2113, "冻结金额"), (2191, "总资产"), (2973, "总市值") } },
-            { 1, new[] { (2102, "证券代码"), (2103, "证券名称"), (2108, "交易市场"), (2106, "股东代码"), (2117, "股票余额"), (2121, "可用余额"), (2122, "成本价"), (2124, "市价"), (2125, "市值"), (2147, "盈亏") } },
-            { 2, new[] { (2139, "委托日期"), (2140, "委托时间"), (2102, "证券代码"), (2103, "证券名称"), (2109, "操作"), (2127, "委托价格"), (2126, "委托数量"), (2128, "成交数量"), (2135, "委托编号"), (2108, "交易市场"), (2106, "股东代码"), (2105, "备注") } },
-            { 3, new[] { (2141, "成交日期"), (2142, "成交时间"), (2135, "委托编号"), (2130, "成交编号"), (2102, "证券代码"), (2103, "证券名称"), (2109, "操作"), (2128, "成交数量"), (2129, "成交均价"), (2131, "成交金额"), (2108, "交易市场"), (2106, "股东代码") } },
-            { 4, new[] { (2139, "委托日期"), (2140, "委托时间"), (2102, "证券代码"), (2103, "证券名称"), (2109, "操作"), (2127, "委托价格"), (2126, "委托数量"), (2128, "成交数量"), (2135, "委托编号"), (2108, "交易市场"), (2106, "股东代码"), (2105, "备注") } },
-            { 5, new[] { (2106, "股东代码"), (2107, "股东名称"), (2171, "市场名称"), (2167, "市场代码"), (2908, "资金帐户"), (2176, "是否主帐号"), (2172, "货币单位") } },
-        };
+    private static readonly Dictionary<int, Field[]> CommonFields = BuildFields();
+
+    private static Dictionary<int, Field[]> BuildFields()
+    {
+        var fields = new Dictionary<int, Field[]>();
+        fields[0] = new Field[] { new Field(2172, "货币单位"), new Field(2112, "资金余额"), new Field(2116, "可用金额"), new Field(2114, "可取金额"), new Field(2113, "冻结金额"), new Field(2191, "总资产"), new Field(2973, "总市值") };
+        fields[1] = new Field[] { new Field(2102, "证券代码"), new Field(2103, "证券名称"), new Field(2108, "交易市场"), new Field(2106, "股东代码"), new Field(2117, "股票余额"), new Field(2121, "可用余额"), new Field(2122, "成本价"), new Field(2124, "市价"), new Field(2125, "市值"), new Field(2147, "盈亏") };
+        fields[2] = new Field[] { new Field(2139, "委托日期"), new Field(2140, "委托时间"), new Field(2102, "证券代码"), new Field(2103, "证券名称"), new Field(2109, "操作"), new Field(2127, "委托价格"), new Field(2126, "委托数量"), new Field(2128, "成交数量"), new Field(2135, "委托编号"), new Field(2108, "交易市场"), new Field(2106, "股东代码"), new Field(2105, "备注") };
+        fields[3] = new Field[] { new Field(2141, "成交日期"), new Field(2142, "成交时间"), new Field(2135, "委托编号"), new Field(2130, "成交编号"), new Field(2102, "证券代码"), new Field(2103, "证券名称"), new Field(2109, "操作"), new Field(2128, "成交数量"), new Field(2129, "成交均价"), new Field(2131, "成交金额"), new Field(2108, "交易市场"), new Field(2106, "股东代码") };
+        fields[4] = new Field[] { new Field(2139, "委托日期"), new Field(2140, "委托时间"), new Field(2102, "证券代码"), new Field(2103, "证券名称"), new Field(2109, "操作"), new Field(2127, "委托价格"), new Field(2126, "委托数量"), new Field(2128, "成交数量"), new Field(2135, "委托编号"), new Field(2108, "交易市场"), new Field(2106, "股东代码"), new Field(2105, "备注") };
+        fields[5] = new Field[] { new Field(2106, "股东代码"), new Field(2107, "股东名称"), new Field(2171, "市场名称"), new Field(2167, "市场代码"), new Field(2908, "资金帐户"), new Field(2176, "是否主帐号"), new Field(2172, "货币单位") };
+        return fields;
+    }
 
     private static void Main()
     {
-        Console.OutputEncoding = Encoding.UTF8;
         var err = NewErr();
 
         // qs_id 356、端口 8002、营业部 48 是同花顺模拟炒股站点。账号和密码换成模拟资金账号。
@@ -328,7 +344,7 @@ internal static class Program
     }
 
     /// <summary>按指定字段 ID 抽出常用列。没有该 ID 时单元格为空，列仍然保留。</summary>
-    private static Table Project(Table raw, (int Id, string Title)[] fields)
+    private static Table Project(Table raw, Field[] fields)
     {
         var view = new Table();
         view.Headers = new string[fields.Length];
@@ -402,8 +418,15 @@ internal static class Program
         Console.WriteLine("行数=" + table.Rows.Count);
     }
 
-    private static StringBuilder NewResult() => new StringBuilder(1024 * 1024);
-    private static StringBuilder NewErr() => new StringBuilder(256);
+    private static StringBuilder NewResult()
+    {
+        return new StringBuilder(1024 * 1024);
+    }
+
+    private static StringBuilder NewErr()
+    {
+        return new StringBuilder(256);
+    }
 
     private sealed class Table
     {

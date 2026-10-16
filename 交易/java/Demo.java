@@ -10,11 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Demo {
+    static {
+        // 必须在第一次使用 JNA 之前设置，字符串按 GBK 传入 DLL。
+        System.setProperty("jna.encoding", "GBK");
+    }
+
     public interface ThsApi extends StdCallLibrary {
-        // 初始化交易运行时。进程内调用一次，须在 Logon 之前。同 OpenTdx。
+        // 初始化交易运行时。进程内调用一次，须在 Logon 之前。
         void Init();
 
-        // 释放全部会话并关闭运行时。调用后不可再使用此前的 ClientID。同 CloseTdx。
+        // 释放全部会话并关闭运行时。调用后不可再使用此前的 ClientID。
         void UnInit();
 
         // 交易账户登录。成功返回 ClientID（>=0），失败返回 -1。
@@ -118,9 +123,7 @@ public class Demo {
         void FundOrder(int clientId, int category, String gddm, String zqdm, int exchangeId, String amount, byte[] result, byte[] errInfo);
     }
 
-    private static final int[][] QUERY_ORDER = {
-            {0}, {1}, {2}, {3}, {4}, {5}
-    };
+    private static final int[] QUERY_ORDER = {0, 1, 2, 3, 4, 5};
     private static final String[] QUERY_NAME = {"资金", "股份", "当日委托", "当日成交", "可撤单", "股东代码"};
 
     private static final int[][] FIELD_IDS = {
@@ -141,7 +144,6 @@ public class Demo {
     };
 
     public static void main(String[] args) {
-        System.setProperty("jna.encoding", "GBK");
         ThsApi api = Native.load("thsapi.dll", ThsApi.class);
 
         byte[] errInfo = new byte[256];
@@ -169,7 +171,7 @@ public class Demo {
         for (int i = 0; i < QUERY_ORDER.length; i++) {
             byte[] result = new byte[1024 * 1024];
             byte[] err = new byte[256];
-            int category = QUERY_ORDER[i][0];
+            int category = QUERY_ORDER[i];
             int rc = api.QueryData(clientId, category, result, err);
             String errText = gbk(err);
             System.out.println("======== QueryData " + category + " " + QUERY_NAME[i] + "  rc=" + rc + " ========");

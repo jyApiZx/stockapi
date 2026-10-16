@@ -19,12 +19,12 @@ def text(buf):
     return buf.value.decode("gbk", errors="replace")
 
 
-# 初始化交易运行时。进程内调用一次，须在 Logon 之前。同 OpenTdx。
+# 初始化交易运行时。进程内调用一次，须在 Logon 之前。
 Init = dll.Init
 Init.argtypes = []
 Init.restype = None
 
-# 释放全部会话并关闭运行时。调用后不可再使用此前的 ClientID。同 CloseTdx。
+# 释放全部会话并关闭运行时。调用后不可再使用此前的 ClientID。
 UnInit = dll.UnInit
 UnInit.argtypes = []
 UnInit.restype = None

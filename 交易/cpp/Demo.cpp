@@ -7,10 +7,10 @@
 #include <vector>
 #include <Windows.h>
 
-// 初始化交易运行时。进程内调用一次，须在 Logon 之前。同 OpenTdx。
+// 初始化交易运行时。进程内调用一次，须在 Logon 之前。
 typedef void (__stdcall* InitFn)();
 
-// 释放全部会话并关闭运行时。调用后不可再使用此前的 ClientID。同 CloseTdx。
+// 释放全部会话并关闭运行时。调用后不可再使用此前的 ClientID。
 typedef void (__stdcall* UnInitFn)();
 
 // 交易账户登录。成功返回 ClientID（>=0），失败返回 -1。
