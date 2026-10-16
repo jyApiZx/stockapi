@@ -4,7 +4,7 @@
 
 ## 下载链接
 
-同花顺交易接口测试 Demo（x64）：[ths_demo_x64v1.0.zip](https://github.com/jyApiZx/stockapi/releases/download/v1.0.0/ths_demo_x64v1.0.zip)
+同花顺交易接口测试包 1.0.2：[64 位](https://github.com/jyApiZx/stockapi/releases/download/v1.0.2/thsapi_1.0.2_x64.zip)、[32 位](https://github.com/jyApiZx/stockapi/releases/download/v1.0.2/thsapi_1.0.2_x32.zip)
 
 行情 L1 测试包（内含 `HqApi.dll` 和演示程序）：[64 位](https://github.com/jyApiZx/stockapi/releases/download/v1.1.0/HqApi-x64.zip)、[32 位](https://github.com/jyApiZx/stockapi/releases/download/v1.1.0/HqApi-x32.zip)
 
