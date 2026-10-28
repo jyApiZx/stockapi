@@ -6,7 +6,7 @@
 
 ## 下载试用
 
-交易测试包 1.0.6.1，里面是 `thsapi.dll`、`xdDemo.exe` 和券商站点列表：[64 位](https://github.com/jyApiZx/stockapi/releases/download/v1.0.6.1/thsapi_1.0.6.1_x64.zip)、[32 位](https://github.com/jyApiZx/stockapi/releases/download/v1.0.6.1/thsapi_1.0.6.1_x32.zip)。
+交易测试包 1.0.6.2，里面是 `thsapi.dll`、`xdDemo.exe` 和券商站点列表：[64 位](https://github.com/jyApiZx/stockapi/releases/download/v1.0.6.2/thsapi_1.0.6.2_x64.zip)、[32 位](https://github.com/jyApiZx/stockapi/releases/download/v1.0.6.2/thsapi_1.0.6.2_x32.zip)。
 
 行情测试包 1.0.6，里面是 `HqApi.dll` 和行情测试程序，L1 和 L2 都在包里：[64 位](https://github.com/jyApiZx/stockapi/releases/download/hqapi-1.0.6/hqapi_1.0.6_x64.zip)、[32 位](https://github.com/jyApiZx/stockapi/releases/download/hqapi-1.0.6/hqapi_1.0.6_x32.zip)。
 
