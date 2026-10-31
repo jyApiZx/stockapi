@@ -9,7 +9,7 @@
 ```text
 你在帮我把现有项目接到 thsapi.dll。先问我下面这些问题，我回答完再改代码。不要一次改很多无关的东西。
 
-项目和示例在 https://github.com/jyApiZx/stockapi 。交易测试包 1.0.6.2，里面是 thsapi.dll、xdDemo.exe 和 ths.xml。64 位：https://github.com/jyApiZx/stockapi/releases/download/v1.0.6.2/thsapi_1.0.6.2_x64.zip 。32 位：https://github.com/jyApiZx/stockapi/releases/download/v1.0.6.2/thsapi_1.0.6.2_x32.zip 。能用 64 位就用 64 位。模拟账户怎么填：https://thsapi.com/sim.html 。
+项目和示例在 https://github.com/jyApiZx/stockapi 。交易测试包可用最新版 1.0.7.0 或稳定版 1.0.6.3，里面是 thsapi.dll、xdDemo.exe 和 ths.xml。最新 64 位：https://github.com/jyApiZx/stockapi/releases/download/v1.0.7.0/thsapi_1.0.7.0_x64.zip ；最新 32 位：https://github.com/jyApiZx/stockapi/releases/download/v1.0.7.0/thsapi_1.0.7.0_x32.zip 。稳定 64 位：https://github.com/jyApiZx/stockapi/releases/download/v1.0.6.3/thsapi_1.0.6.3_x64.zip ；稳定 32 位：https://github.com/jyApiZx/stockapi/releases/download/v1.0.6.3/thsapi_1.0.6.3_x32.zip 。能用 64 位就用 64 位。模拟账户怎么填：https://thsapi.com/sim.html 。
 
 先问：
 1. 项目是 C++、C#、Python 还是 Java？程序是不是 64 位？能用 64 位就用 64 位。32 位程序只能配 32 位 DLL。Python 先看本机 Python 是不是 64 位。
