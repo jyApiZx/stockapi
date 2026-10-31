@@ -1,6 +1,6 @@
 # 同花顺交易接口  |ths  trade接口 | ths auto trade交易接口 | 通达信交易接口| 通达信auto trade交易即可
 
-**同花顺交易接口，L1、L2 行情接口。直连券商，无需启动客户端，支持所有券商。产品介绍见 [thsapi.com](https://thsapi.com/)。技术支持请联系 [Telegram：@Thsapi](https://t.me/Thsapi)**
+**同花顺交易接口，L1 与扩展行情接口。直连券商，无需启动客户端，支持所有券商。产品介绍见 [thsapi.com](https://thsapi.com/)。技术支持请联系 [Telegram：@Thsapi](https://t.me/Thsapi)**
 
 交易库是 `thsapi.dll`，行情库是 `HqApi.dll`，都有 32 位和 64 位。Python、Java、C#、C/C++ 都可以接。下面按使用顺序说明授权、安全和安装。调用参数见后文，也可以看 [thsapi.com](https://thsapi.com/)。
 
@@ -8,7 +8,7 @@
 
 交易测试包 1.0.6.2，里面是 `thsapi.dll`、`xdDemo.exe` 和券商站点列表：[64 位](https://github.com/jyApiZx/stockapi/releases/download/v1.0.6.2/thsapi_1.0.6.2_x64.zip)、[32 位](https://github.com/jyApiZx/stockapi/releases/download/v1.0.6.2/thsapi_1.0.6.2_x32.zip)。
 
-行情测试包 1.0.6，里面是 `HqApi.dll` 和行情测试程序，L1 和 L2 都在包里：[64 位](https://github.com/jyApiZx/stockapi/releases/download/hqapi-1.0.6/hqapi_1.0.6_x64.zip)、[32 位](https://github.com/jyApiZx/stockapi/releases/download/hqapi-1.0.6/hqapi_1.0.6_x32.zip)。
+行情测试包 1.0.7.0，里面是 `HqApi.dll` 和行情测试程序：[64 位](https://github.com/jyApiZx/stockapi/releases/download/hqapi-1.0.7.0/hqapi_1.0.7.0_x64.zip)、[32 位](https://github.com/jyApiZx/stockapi/releases/download/hqapi-1.0.7.0/hqapi_1.0.7.0_x32.zip)。授权含 L1 与扩展行情。
 
 初次使用，如果您对产品还有疑虑，可以用同花顺模拟账户测试。登录账号填手机号、同花顺账户或股东账户，三选一，资金账号留空。[模拟账户怎么填](https://thsapi.com/sim.html)，仓库说明见 [模拟账户.md](模拟账户.md)。
 
@@ -43,7 +43,7 @@
 - 直连券商交易服务器，中间不经过客户端。支持普通账户和融资融券账户的下单、撤单、查询和成交回报，以及融资买入、融券卖出、担保品买卖、买券还券、卖券还款、直接还款和新股申购。
 - 可以单账户操作，也可以多个账户同时保持连接。同一账户有批量查询、批量下单、批量撤单；多个账户有 `QueryMultiAccountsDatas`、`SendMultiAccountsOrders`、`CancelMultiAccountsOrders`。同一个 `ClientID` 请串行调用，不同账户可以并行。
 - 交易连接有心跳，断线会重连。下单耗时主要取决于到券商的网络和券商限速。64 位大约比 32 位快 30%。
-- 交易连接上可以直接取五档快照：`GetQuote`、`GetQuotes`、`GetMultiAccountsQuotes`。独立行情库 `HqApi.dll` 另外提供 L1 和 L2。L1 是实时行情、Tick、五档和分钟 K 线；L2 是十档、买卖队列和逐笔。
+- 交易连接上可以直接取五档快照：`GetQuote`、`GetQuotes`、`GetMultiAccountsQuotes`。独立行情库 `HqApi.dll` 提供 L1 与扩展行情。L1 是实时行情、Tick、五档和分钟 K 线；扩展行情是期货、期权等（`TdxExHq_*`）。
 - 导出函数是 `stdcall`。C++、C#、Python、Java 有现成示例；Delphi、VB、易语言按同样的函数名调用即可。
 - 信用账户登录时，在普通资金账号开头加 `X`，交易账号仍用信用资金账号。
 - 已有项目时，可以把 [AI接入提示词.md](AI接入提示词.md) 交给正在改项目的 AI，或打开 [AI 代做提示词](https://thsapi.com/ai.html)。
@@ -52,13 +52,13 @@
 
 授权按账户开通，不需要提供交易密码。
 
-网络授权只在登录授权时发送经过哈希处理的账号标识。授权服务器只保存这个哈希值和使用时间，不接收交易密码、持仓、委托或成交。校验通过后由服务端下发 `thsapi.lic`，下发完成后，程序只连接券商交易站点或行情站点。
+网络授权只在登录授权时发送经过哈希处理的账号标识。授权服务器只保存这个哈希值和使用时间，不接收交易密码、持仓、委托或成交。校验通过后不再连接授权服务器，也不下发 `thsapi.lic`，程序只连接券商交易站点或行情站点。
 
 本地授权是把 `thsapi.lic` 直接放在你的电脑上，DLL 读取本地文件完成授权，不连接授权服务器。运行期间除券商交易或行情网络外，不连接其他服务。
 
-`thsapi.lic` 的文件名和内容不可修改，否则无法登录。
+本地授权的 `thsapi.lic` 文件名和内容不可修改，否则无法登录。
 
-普通账户和信用账户是两个账户，各自授权。通达信 L2 行情账户要向通达信另行开通，不包含在这里的软件授权里。
+普通账户和信用账户是两个账户，各自授权。行情授权含 L1 与扩展行情。
 
 ### （三）用户安全
 
@@ -67,7 +67,7 @@ DLL 只在你的程序调用时工作，读不到策略源码。证券账户的�
 可以自己核对，不必只看说明：
 
 - 用资源监视器或 `netstat` 看这个进程连了哪些地址。
-- 在 Windows 防火墙里限制程序能访问的地址。拿到 `thsapi.lic` 后，两种授权都可以只放行券商交易或行情站点的 IP 和端口。
+- 在 Windows 防火墙里限制程序能访问的地址，只放行券商交易或行情站点。网络授权只在登录时校验一次，不会一直连着授权服务器；本地授权本来就不连。
 - 这些检查都可以交给 AI：让它跑模拟账户、列出网络连接、写防火墙出站规则。
 - 先在单独目录里用模拟账户登录、查询、下单和撤单，再接到正式策略上。
 
@@ -77,20 +77,19 @@ DLL 只在你的程序调用时工作，读不到策略源码。证券账户的�
 
 一次下单包含打包、发送、接收和解包。发送和接收的时间取决于你的网络和券商处理速度，接口改不了这段网络时间。同一账户的调用请串行。批量接口可以一次提交多笔，实际速度以券商限制为准，使用前请向券商确认允许的频率。
 
-下面是单次调用从发出到返回的往返时间，不是平均值。交易在同花顺模拟站点实测，行情在通达信 L1 站点实测。不同网络环境、不同券商站点，速度会有差异。建议下载上面的测试包，在自己的网络里再测一次。
+下面是单次调用从发出到返回的往返时间，不是平均值。交易在同花顺模拟站点实测，行情在 L1 站点实测。不同网络环境、不同券商站点，速度会有差异。建议下载上面的测试包，在自己的网络里再测一次。
 
 交易接口 `thsapi.dll`：下单 `SendOrder` 45 毫秒。查询资金 `QueryData(0)` 38 毫秒，查询股份 `QueryData(1)` 40 毫秒，查询当日委托 `QueryData(2)` 36 毫秒，查询股东代码 `QueryData(5)` 42 毫秒。直连券商交易服务器，中间没有客户端和中转。券商不限速时，批量下单约 200 单/秒。成交回报由券商主动推送，不用轮询。
 
-行情接口 `HqApi.dll`：单只五档 `GetSecurityQuotes` 33 毫秒，K 线 `GetSecurityBars` 32 毫秒，分时 `GetMinuteTimeData` 33 毫秒。真实环境下，一次调用批量函数拉取全市场五档，5224 只全部返回，含数据解码，185 毫秒取回。L2 另有十档、买卖队列和逐笔，需要通达信 L2 账户。
+行情接口 `HqApi.dll`：单只五档 `GetSecurityQuotes` 33 毫秒，K 线 `GetSecurityBars` 32 毫秒，分时 `GetMinuteTimeData` 33 毫秒，集合竞价 `GetCallAuctionData` 35 毫秒，板块 `ListBoards` 41 毫秒，F10 `GetCompanyInfoContent` 48 毫秒。真实环境下，一次调用批量函数拉取全市场五档，5224 只全部返回，含数据解码，185 毫秒取回。授权含 L1 与扩展行情。
 
 #### 1. 行情
 
 行情都是程序主动查询。`HqApi.dll` 连接有心跳，断了会重连。
 
 - L1：端口 `7709`，账号写成 `L1*账号`，密码用该账号的密码，不能为空。
-- L2：端口 `7719`，账号不要加 `L1*` 或 `L2*` 前缀。使用前需要已经开通 L2 账户：[通达信L2普及版](https://vip.tdx.com.cn/site/app/pc-mall/main.html#/page_product_pj_cf?param=%7B%22categoryId%22%3A%224%22%7D)。
-- 同一个 L2 行情账户后登录的连接会替换先登录的连接，不适合多台机器同时在线。普通五档可以按主机规则多点连接。
-- L2 服务器对过快的反复重连会短暂拒绝。连续失败时先拉开重连间隔，不要紧接着无限重试。
+- 扩展行情：常见端口 `7727` / `7721`，使用 `TdxExHq_*`，连接号不要与 A 股混用。
+- 普通五档可以按主机规则多点连接。
 
 #### 2. 交易
 
@@ -104,7 +103,7 @@ DLL 只在你的程序调用时工作，读不到策略源码。证券账户的�
 
 价格不写在这里，以 [官网授权方式](https://thsapi.com/#license) 为准。交易接口和行情接口都适用。付款后把记录发给 [Telegram：@Thsapi](https://t.me/Thsapi)。
 
-网络授权可以更换账户。本地授权对应具体账户，更换资金账号后需要重新开通。通达信 L2 行情账户向通达信另行购买，不包含在软件授权里。Linux `.so` 和其他功能单独约定。联系 [Telegram：@Thsapi](https://t.me/Thsapi)。
+网络授权可以更换账户。本地授权对应具体账户，更换资金账号后需要重新开通。行情授权含 L1 与扩展行情。Linux `.so` 和其他功能单独约定。联系 [Telegram：@Thsapi](https://t.me/Thsapi)。
 
 ## 三、安装调试
 
@@ -155,7 +154,7 @@ DLL 只在你的程序调用时工作，读不到策略源码。证券账户的�
 
 **资金能转到别人的账户吗。** 银证转账只能在证券账户和已绑定的本人同名银行账户之间进行。这不能代替你自己保管密码。
 
-**行情账号怎么填。** L1 写成 `L1*账号`，L2 不加前缀，并且要先开通 [通达信L2普及版](https://vip.tdx.com.cn/site/app/pc-mall/main.html#/page_product_pj_cf?param=%7B%22categoryId%22%3A%224%22%7D)。行情账号和上面的软件授权是两件事。
+**行情账号怎么填。** L1 写成 `L1*账号`。扩展行情用 `TdxExHq_*`。
 
 **返回乱码。** `Result` 和 `ErrInfo` 是 GBK。`Result` 以换行分行、以制表符分列。
 
@@ -166,7 +165,7 @@ DLL 只在你的程序调用时工作，读不到策略源码。证券账户的�
 | 类别 | 说明 |
 | --- | --- |
 | **同花顺交易接口** | 登录、查询、下单、撤单、打新、场内基金等；`Result` 为 GBK TSV |
-| **通达信行情接口** | `TdxHq_*` A 股行情、`TdxExHq_*` 扩展行情；L2 主机常见端口 `7719`，L1 常见 `7709` |
+| **通达信行情接口** | `TdxHq_*` A 股 L1 行情、`TdxExHq_*` 扩展行情；L1 常见端口 `7709`，扩展常见 `7727` / `7721` |
 | **同花顺行情接口** | 交易会话上的证券**五档快照**（`GetQuote` 等），与交易共用 `ClientID` |
 
 进程位数须与 `thsapi.dll`、`HqApi.dll` 一致（x86 或 x64）。除连接类接口外，成功返回多为 `true` 或 `0`；`Result`、`ErrInfo` 为 **GBK** 文本，`Result` 行以 `\n` 分隔、列以 `\t` 分隔。
@@ -280,7 +279,7 @@ A 股：`TdxHq_Connect` → 各类查询 → `TdxHq_Disconnect`。扩展行情�
 
 ### L2
 
-连接 **L2 主机**（端口 `7719`）后可使用。账号不要加 `L1*` 或 `L2*`，直接写通达信账户。使用 L2 数据，需要先具有 L2 账户：[通达信L2普及版](https://vip.tdx.com.cn/site/app/pc-mall/main.html#/page_product_pj_cf?param=%7B%22categoryId%22%3A%224%22%7D)。
+DLL 中仍保留下列导出。L2 定制联系 [Telegram：@Thsapi](https://t.me/Thsapi)。
 
 | API | 用途 |
 | --- | --- |

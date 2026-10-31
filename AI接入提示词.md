@@ -42,13 +42,13 @@ Init 和 UnInit 整个进程只调用一次。可以登录多个账户，每个�
 ```text
 你在帮我把现有项目接到 HqApi.dll。先问我项目是 C++、C#、Python 还是 Java，程序是不是 64 位。能用 64 位就用 64 位。32 位程序只能配 32 位 DLL。我回答完再改代码。
 
-项目和示例在 https://github.com/jyApiZx/stockapi 。行情包里面是 HqApi.dll 和演示程序，L1 和 L2 都在里面。64 位：https://github.com/jyApiZx/stockapi/releases/download/hqapi-1.0.6/hqapi_1.0.6_x64.zip 。32 位：https://github.com/jyApiZx/stockapi/releases/download/hqapi-1.0.6/hqapi_1.0.6_x32.zip 。能用 64 位就用 64 位。
+项目和示例在 https://github.com/jyApiZx/stockapi 。行情包里面是 HqApi.dll 和演示程序。64 位：https://github.com/jyApiZx/stockapi/releases/download/hqapi-1.0.7.0/hqapi_1.0.7.0_x64.zip 。32 位：https://github.com/jyApiZx/stockapi/releases/download/hqapi-1.0.7.0/hqapi_1.0.7.0_x32.zip 。能用 64 位就用 64 位。
 
-只支持 Windows。程序旁边放 HqApi.dll，位数要和程序一样。L1 能取实时行情、Tick、买卖五档，以及一分钟、五分钟 K 线。L2 能取十档、买卖队列、逐笔成交、逐笔还原和逐笔委托。
+只支持 Windows。程序旁边放 HqApi.dll，位数要和程序一样。授权含 L1 与扩展行情。L1 能取实时行情、Tick、买卖五档，以及一分钟、五分钟 K 线。扩展行情用 TdxExHq_*，常见端口 7727 / 7721。
 
-L1 连 7709，账号写成 L1*账号，不能用 guest，也不能空着。L2 连 7719，账号不要加 L1*、L2* 或其他前缀，直接写通达信账户，并且该账户已经开通通达信 L2。密码填该账号的密码，不能是空串。
+L1 连 7709，账号写成 L1*账号，不能用 guest，也不能空着。密码填该账号的密码，不能是空串。不要接 L2，也不要按 L2 去配账号。
 
-行情站点用仓库 行情/cpp/Demo.cpp 里的主站列表。L1 和 L2 各连各的，连上一个就行。A 股的连接号不要拿去调扩展行情。中文结果是 GBK。Result 开 1MB，ErrInfo 开 256 字节。
+行情站点用仓库 行情/cpp/Demo.cpp 里的主站列表。A 股的连接号不要拿去调扩展行情。中文结果是 GBK。Result 开 1MB，ErrInfo 开 256 字节。
 
 其余参数去读 https://github.com/jyApiZx/stockapi 里 行情 目录的示例和 https://thsapi.com/hq.html ，不要凭记忆编接口。我还没有项目时，再按示例新写一份。
 ```
