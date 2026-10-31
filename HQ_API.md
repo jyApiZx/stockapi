@@ -1,6 +1,8 @@
 # 行情 API 说明
 
-`Api.dll` 提供 A 股行情（`TdxHq_*`）与扩展行情（`TdxExHq_*`）两套 stdcall 导出。本文面向接入方：参数、返回值、`Result` 列含义与调用注意。
+`HqApi.dll` 提供 A 股行情（`TdxHq_*`）与扩展行情（`TdxExHq_*`）两套 stdcall 导出。本文面向接入方：参数、返回值、`Result` 列含义与调用注意。
+
+行情测试包 1.0.7.0，包内是 `HqApi.dll` 与演示程序：[64 位](https://github.com/jyApiZx/stockapi/releases/download/hqapi-1.0.7.0/hqapi_1.0.7.0_x64.zip)、[32 位](https://github.com/jyApiZx/stockapi/releases/download/hqapi-1.0.7.0/hqapi_1.0.7.0_x32.zip)。
 
 接入重点是 L2：十档盘口（`TdxHq_GetSecurityQuotes10`）、买卖队列（`TdxHq_GetBuySellQueue`）、逐笔成交明细（`TdxHq_GetDetailTransactionData`、`TdxHq_GetDetailOriginalTransactionData`）和逐笔委托（`TdxHq_GetDetailOrderData`）。这些接口需要 L2 主机与相应授权，常见端口 `7719`。
 
