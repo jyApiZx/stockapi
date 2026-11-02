@@ -1,4 +1,4 @@
-# 同花顺交易接口  |ths  trade接口 | ths auto trade交易接口 | 通达信交易接口| 通达信auto trade交易即可
+# 同花顺交易接口  
 
 **同花顺交易接口，L1 与扩展行情接口。直连券商，无需启动客户端，支持所有券商。产品介绍见 [thsapi.com](https://thsapi.com/)。技术支持请联系 [Telegram：@Thsapi](https://t.me/Thsapi)**
 
