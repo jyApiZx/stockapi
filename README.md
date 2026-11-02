@@ -6,7 +6,7 @@
 
 ## 下载试用
 
-交易测试包：最新版 1.0.7.0（[64 位](https://github.com/jyApiZx/stockapi/releases/download/v1.0.7.0/thsapi_1.0.7.0_x64.zip)、[32 位](https://github.com/jyApiZx/stockapi/releases/download/v1.0.7.0/thsapi_1.0.7.0_x32.zip)），稳定版 1.0.6.3（[64 位](https://github.com/jyApiZx/stockapi/releases/download/v1.0.6.3/thsapi_1.0.6.3_x64.zip)、[32 位](https://github.com/jyApiZx/stockapi/releases/download/v1.0.6.3/thsapi_1.0.6.3_x32.zip)）。包内是 `thsapi.dll`、`xdDemo.exe` 和券商站点列表。
+交易测试包：最新版 1.0.7.12（[64 位](https://github.com/jyApiZx/stockapi/releases/download/v1.0.7.12/thsapi_1.0.7.12_x64.zip)、[32 位](https://github.com/jyApiZx/stockapi/releases/download/v1.0.7.12/thsapi_1.0.7.12_x32.zip)），稳定版 1.0.7.0（[64 位](https://github.com/jyApiZx/stockapi/releases/download/v1.0.7.0/thsapi_1.0.7.0_x64.zip)、[32 位](https://github.com/jyApiZx/stockapi/releases/download/v1.0.7.0/thsapi_1.0.7.0_x32.zip)）。包内是 `thsapi.dll`、`xdDemo.exe` 和券商站点列表。
 
 行情测试包 1.0.7.0，里面是 `HqApi.dll` 和行情测试程序：[64 位](https://github.com/jyApiZx/stockapi/releases/download/hqapi-1.0.7.0/hqapi_1.0.7.0_x64.zip)、[32 位](https://github.com/jyApiZx/stockapi/releases/download/hqapi-1.0.7.0/hqapi_1.0.7.0_x32.zip)。授权含 L1 与扩展行情。
 
@@ -103,7 +103,7 @@ DLL 只在你的程序调用时工作，读不到策略源码。证券账户的�
 
 价格不写在这里，以 [官网授权方式](https://thsapi.com/#license) 为准。交易接口和行情接口都适用。付款后把记录发给 [Telegram：@Thsapi](https://t.me/Thsapi)。
 
-网络授权可以更换账户。本地授权对应具体账户，更换资金账号后需要重新开通。行情授权含 L1 与扩展行情。Linux `.so` 和其他功能单独约定。联系 [Telegram：@Thsapi](https://t.me/Thsapi)。
+网络授权可以更换账户。本地授权对应具体账户，不可更改账户。行情授权含 L1 与扩展行情。Linux `.so` 和其他功能单独约定。联系 [Telegram：@Thsapi](https://t.me/Thsapi)。
 
 ## 三、安装调试
 
